@@ -9,10 +9,10 @@ h = 480
 surface = pygame.display.set_mode((w, h))
 
 red = pygame.Color('red')
-c1 = pygame.Color("#AA7139")
-c2 = pygame.Color("white")
+c1 = pygame.Color("#144900")
+c2 = pygame.Color("#A5DA91")
 
-background = c1
+background = pygame.Color("black")
 white = pygame.Color('white')
 
 def within_screen((x, y)):
