@@ -1,9 +1,11 @@
+# Lagg till djup i slutet
+
 import pygame
 from random import random, randrange, choice
 import math
 
 w = 640
-h = 480    
+h = 480
 surface = pygame.display.set_mode((w, h))
 
 background = pygame.Color('black')
@@ -29,15 +31,29 @@ def hard_rime():
     return f
 
 def random_point():
+    return choice([squares, lines])()
+
+def lines():
     x = randrange(w)
     y = randrange(h)
 
-    width = randrange(1, 100)
-    height = randrange(1, 100)
+    dx, dy = choice([(1, -1), (1, 1), (-1, 1), (-1, -1)])
+
+    def f(t):
+        return (x + dx * t,
+                y + dy * t)
+    
+    return f
+
+def squares():
+    x = randrange(w)
+    y = randrange(h)
+
+    width = randrange(1, 400)
+    height = randrange(1, 400)
 
     radius = (width + height) * 2
 
-    dx, dy = choice([(1, -1), (1, 1), (-1, 1), (-1, -1)])
 
     def f(t):
         t %= radius
@@ -46,9 +62,9 @@ def random_point():
         elif (t < width + height): # Draw -|
             return (x + width, y + t - width)
         elif (t < width + height + width): # Draw =|
-            return (x + width - t - width - height, y + height)
+            return (x + width - t + width + height, y + height)
         else: # Draw |=|
-            return (x, y - t - width - height - width)
+            return (x, y + height - t + width + height + width)
 
     return f
 
@@ -59,7 +75,7 @@ def main():
     clock = pygame.time.Clock()
     
     # p = (t, \t -> (x, y))
-    points = [(0, random_point(), [])] * 1 
+    points = [(0, random_point(), [])]
 
     surface.fill(background)
 
