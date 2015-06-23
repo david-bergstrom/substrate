@@ -71,9 +71,17 @@ def squares():
 
     return f
 
-
 def get_color((x, y)):
-    r = x * 1.0 / w
+    cx = w / 2
+    cy = h / 2
+
+    dx = abs(x - cx)
+    dy = abs(y - cy)
+
+    maxc = max(cx, cy)
+
+    r = (dx + dy * 1.0)  / (maxc * 2)
+
     return pygame.Color(int(c1.r * r + c2.r * (1 - r)),
                         int(c1.g * r + c2.g * (1 - r)),
                         int(c1.b * r + c2.b * (1 - r)),
@@ -91,6 +99,10 @@ def main():
     surface.fill(background)
 
     running = True
+
+    #for i in range(w):
+    #    for j in range(h):
+    #        surface.set_at((i,j), get_color((i,j)))
     
     while True:
         clock.tick(200)
@@ -143,7 +155,6 @@ def etch_a_sketch():
             return (x, y + t)
 
     return f
-
 
 if __name__ == '__main__':
     main()
