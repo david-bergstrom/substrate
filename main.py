@@ -8,7 +8,11 @@ w = 640
 h = 480
 surface = pygame.display.set_mode((w, h))
 
-background = pygame.Color('black')
+red = pygame.Color('red')
+c1 = pygame.Color("#AA7139")
+c2 = pygame.Color("white")
+
+background = c1
 white = pygame.Color('white')
 
 def within_screen((x, y)):
@@ -31,7 +35,7 @@ def hard_rime():
     return f
 
 def random_point():
-    return choice([squares, lines])()
+    return choice([squares, lines, squares])()
 
 def lines():
     x = randrange(w)
@@ -40,8 +44,7 @@ def lines():
     dx, dy = choice([(1, -1), (1, 1), (-1, 1), (-1, -1)])
 
     def f(t):
-        return (x + dx * t,
-                y + dy * t)
+        return (x + dx * t, y + dy * t)
     
     return f
 
@@ -49,8 +52,8 @@ def squares():
     x = randrange(w)
     y = randrange(h)
 
-    width = randrange(1, 400)
-    height = randrange(1, 400)
+    width = randrange(1, 100)
+    height = randrange(1, 100)
 
     radius = (width + height) * 2
 
@@ -68,6 +71,14 @@ def squares():
 
     return f
 
+
+def get_color((x, y)):
+    r = x * 1.0 / w
+    return pygame.Color(int(c1.r * r + c2.r * (1 - r)),
+                        int(c1.g * r + c2.g * (1 - r)),
+                        int(c1.b * r + c2.b * (1 - r)),
+                        255)
+
 def main():
     pygame.init()
 
@@ -75,7 +86,7 @@ def main():
     clock = pygame.time.Clock()
     
     # p = (t, \t -> (x, y))
-    points = [(0, random_point(), [])]
+    points = [(0, random_point(), [])] * 5
 
     surface.fill(background)
 
@@ -94,11 +105,11 @@ def main():
         if running:
             new_points = []
             for time, f, history in points:
-                new_point = f(time + 1)
+                new_point = f(time)
                 if new_point in history:
                     new_points.append((time + 1, f, history))
                 elif within_screen(new_point) and empty_pixel(new_point):
-                    surface.set_at(new_point, white)
+                    surface.set_at(new_point, get_color(new_point))
                     new_points.append((time + 1, f, history))
                 else:
                     #print(new_point, 'was not accepted, within_screen:',
