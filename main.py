@@ -12,7 +12,7 @@ red = pygame.Color('red')
 c1 = pygame.Color("#144900")
 c2 = pygame.Color("#A5DA91")
 
-background = pygame.Color("black")
+background = pygame.Color("white")
 white = pygame.Color('white')
 
 def within_screen((x, y)):
@@ -111,8 +111,8 @@ def main():
             if event.type == pygame.QUIT: 
                 exit()
             if event.type == pygame.KEYDOWN:
-                if event.type == pygame.K_SPACE:
-                    running != running
+                if event.key == pygame.K_SPACE:
+                    running = not running
 
         if running:
             new_points = []
